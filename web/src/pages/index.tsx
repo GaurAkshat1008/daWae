@@ -1,4 +1,4 @@
-import {
+  import {
   Box,
   Button,
   Flex,
@@ -18,6 +18,7 @@ import { createURQLClient } from "../utils/createURQLClient";
 import { useState } from "react";
 import { graphqlSync } from "graphql";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { UpDootSection } from "../components/UpDootSection";
 
 const Index = () => {
   const [variables, setVariables] = useState({
@@ -54,20 +55,7 @@ const Index = () => {
         <Stack spacing={8} mb={4}>
           {data!.posts.posts.map((p) => (
             <Flex key={p.id} p={2} shadow="md" borderWidth="1px">
-              <Flex
-                direction={"column"}
-                mr={4}
-                mt={2}
-                mb={2}
-                justifyContent={"center"}
-                alignItems={"center"}
-              >
-                <IconButton aria-label='upDoot' size={'md'} variant={'outline'} icon={<ChevronUpIcon/>} isRound/>
-                <Text color={p.points >= 0 ? "green.500" : "red.500"}>
-                  {p.points}
-                </Text>
-                <IconButton aria-label='downDoot' size={'md'} variant={'outline'} icon={<ChevronDownIcon/>} isRound/>
-              </Flex>
+              <UpDootSection posts={p}/>
               <Box>
                 <Text fontSize={"xs"} color={"gray.500"}>
                   posted by d\{p.creator.username}
