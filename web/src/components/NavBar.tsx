@@ -1,5 +1,5 @@
 //#1a202c background color
-import { Box, Button, Flex, Link } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Link } from "@chakra-ui/react";
 import React from "react";
 import NextLink from "next/link";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
@@ -8,12 +8,11 @@ import { isServer } from "../utils/isServer";
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
   const [{ data, fetching }] = useMeQuery({
-    pause: isServer(), 
+    pause: isServer(),
   });
-  
+
   let body = null;
   if (fetching) {
     //user not logged in
@@ -30,8 +29,8 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     );
   } else {
     body = (
-      <Flex >
-        <Box mr={3}>{data.me.username}</Box>
+      <Flex>
+        <Box mr={3} p={1}>{data.me.username}</Box>
         <Button
           backgroundColor={"red.500"}
           variant={"ghost"}
@@ -46,10 +45,17 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     );
   }
   return (
-    <Flex position={'sticky'} top={0} zIndex={1} bg="#AABBCC" p={4} mb={8}>
-      <Box ml={"auto"} fontSize={20} fontWeight={600} fontFamily={'heading'}>
+    <Flex position={"sticky"} top={0} zIndex={1} bg="#AABBCC" p={4} mb={8}>
+      <Flex flex={1} m={'auto'} maxW={800} align={'center'}>
+      <NextLink href={"/"}>
+        <Link>
+          <Heading>Dawae</Heading>
+        </Link>
+      </NextLink>
+      <Box ml={"auto"} fontSize={20} fontWeight={600} fontFamily={"heading"}>
         {body}
       </Box>
+      </Flex>
     </Flex>
   );
 };
