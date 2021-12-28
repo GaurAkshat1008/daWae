@@ -2,10 +2,7 @@
   Box,
   Button,
   Flex,
-  flexbox,
   Heading,
-  Icon,
-  IconButton,
   Skeleton,
   Stack,
   Text,
@@ -16,8 +13,6 @@ import NextLink from "next/link";
 import { usePostsQuery } from "../generated/graphql";
 import { createURQLClient } from "../utils/createURQLClient";
 import { useState } from "react";
-import { graphqlSync } from "graphql";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { UpDootSection } from "../components/UpDootSection";
 
 const Index = () => {
@@ -45,7 +40,7 @@ const Index = () => {
           <NextLink href={"/create-post"}>Create Post</NextLink>
         </Button>
       </Flex>
-      {stale || (fetching && !data) ? (
+      {stale && !data ? (
         <Stack>
           <Skeleton height="20px" />
           <Skeleton height="20px" />
@@ -55,7 +50,7 @@ const Index = () => {
         <Stack spacing={8} mb={4}>
           {data!.posts.posts.map((p) => (
             <Flex key={p.id} p={2} shadow="md" borderWidth="1px">
-              <UpDootSection posts={p}/>
+              <UpDootSection post={p}/>
               <Box>
                 <Text fontSize={"xs"} color={"gray.500"}>
                   posted by d\{p.creator.username}

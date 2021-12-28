@@ -4,7 +4,7 @@ import { Redis } from "ioredis";
 
 export type MyContext = {
     req: Request & {
-        session: Session & Partial<SessionData> & { userId: number };
+        session: { userId: number } & Session & Partial<SessionData>;
     }
     redis:Redis
     res: Response
