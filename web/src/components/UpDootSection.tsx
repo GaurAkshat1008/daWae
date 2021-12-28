@@ -32,7 +32,7 @@ export const UpDootSection: React.FC<UpDootSectionProps> = ({ post }) => {
       colorScheme={post.voteStatus === 1 ? 'green' : undefined}
         aria-label="upDoot"
         size={"md"}
-        variant={"outline"}
+        variant={post.voteStatus === 1 ? "solid" : "outline"}
         icon={<ChevronUpIcon />}
         isRound
         />
@@ -52,7 +52,7 @@ export const UpDootSection: React.FC<UpDootSectionProps> = ({ post }) => {
         colorScheme={post.voteStatus === -1?'red' :undefined}
         isLoading = {loadingState === "downdoot-loading"}
         size={"md"}
-        variant={"outline"}
+        variant={post.voteStatus === -1 ? "solid" : "outline"}
         icon={<ChevronDownIcon />}
         isRound
       />
