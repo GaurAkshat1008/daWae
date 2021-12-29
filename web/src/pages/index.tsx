@@ -12,16 +12,18 @@ import {
 import { withUrqlClient } from "next-urql";
 import { Layout } from "../components/Layout";
 import NextLink from "next/link";
-import { useDeletePostMutation, usePostsQuery } from "../generated/graphql";
+import { useDeletePostMutation, useMeQuery, usePostsQuery } from "../generated/graphql";
 import { createURQLClient } from "../utils/createURQLClient";
 import { useState } from "react";
 import { UpDootSection } from "../components/UpDootSection";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 
 const Index = () => {
   const router = useRouter();
   const [, deletePost] = useDeletePostMutation();
+  const [{data: myData}] = useMeQuery()
+  console.log(myData?.me?.id)
   const [variables, setVariables] = useState({
     limit: 15,
     cursor: null as null | string,
@@ -71,20 +73,35 @@ const Index = () => {
                   <Text flex={1} mt={4} isTruncated>
                     {p.textSnippet}
                   </Text>
-                  <IconButton
-                    aria-label="Search database"
+                  { myData?.me?.id === p.creator.id ?
+                  <Box>
+                    <NextLink href={`post/edit/${p.id}`}>
+                    <IconButton
+                    aria-label="update post"
+                    mr={4}
+                    fontSize={24}
+                    variant={"outline"}
+                    color={"twitter.400"}
+                    icon={<EditIcon/>}
+                    />
+                    </NextLink>
+                    <IconButton
+                    aria-label="delete post"
                     fontSize={24}
                     variant={"outline"}
                     icon={
                       <DeleteIcon
-                        color={"red.400"}
-                        onClick={() => {
-                          deletePost({ id: p.id });
-                          router.push("/");
-                        }}
+                      color={"red.400"}
+                      onClick={() => {
+                        deletePost({ id: p.id });
+                      }}
                       />
                     }
-                  />
+                    />
+                    </Box>
+                    :null
+                  }
+                  
                 </Flex>
               </Box>
             </Flex>

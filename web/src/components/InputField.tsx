@@ -21,8 +21,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   ...props
 }) => {
   let InputOrTextArea = Input;
+  let height = '45px';
   if (textarea) {
     InputOrTextArea = Textarea as any;
+    height = '300px'
   }
   const [field, { error }] = useField(props);
   return (
@@ -33,6 +35,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         {...props}
         id={field.name}
         placeholder={props.placeholder}
+        h={height}
       />
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>

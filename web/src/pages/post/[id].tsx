@@ -7,22 +7,13 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
-import { useRouter } from "next/router";
 import React from "react";
 import { Layout } from "../../components/Layout";
-import { usePostQuery } from "../../generated/graphql";
 import { createURQLClient } from "../../utils/createURQLClient";
+import { useGetPostFromUrl } from "../../utils/useGetPostFromUrl";
 
 const Post = ({}) => {
-  const router = useRouter();
-  const intId = typeof router.query.id === "string" ? parseInt(router.query.id) : -1;
-  
-  const [{ data, error, fetching }] = usePostQuery({
-    pause: intId === -1,
-    variables: {
-      id: intId,
-    },
-  });
+  const [{ data, error, fetching }] = useGetPostFromUrl()
   if (fetching) {
     return <Layout>Loading...</Layout>;
   }
@@ -46,7 +37,7 @@ const Post = ({}) => {
         <Flex>
           <Text m={4} flex={1} fontSize={"sm"} color={"gray.400"}>
             {data.post.creator.username}
-          </Text>
+          </Text>          
         </Flex>
       </Box>
       <Divider orientation="horizontal" />
