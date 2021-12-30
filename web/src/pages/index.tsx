@@ -23,17 +23,16 @@ const Index = () => {
   const router = useRouter();
   const [, deletePost] = useDeletePostMutation();
   const [{data: myData}] = useMeQuery()
-  console.log(myData?.me?.id)
   const [variables, setVariables] = useState({
     limit: 15,
     cursor: null as null | string,
   });
-  const [{ data, fetching, stale }] = usePostsQuery({
+  const [{ data, fetching, stale , error}] = usePostsQuery({
     variables,
   });
 
   if (!fetching && !data) {
-    return <Box>You got query falied for some reason</Box>;
+    return <Box>{error?.message}</Box>;
   }
   return (
     <Layout>

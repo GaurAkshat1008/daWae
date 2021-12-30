@@ -16,6 +16,8 @@ import { Post } from "./entities/Post";
 import { User } from "./entities/User";
 import path from "path";
 import { Updoot } from "./entities/Updoot";
+import { createUserLoader } from "./utils/createUserLoader";
+import { createUpdootLoader } from "./utils/createUpdootLoader";
 
 const main = async () => {
   const conn = await createConnection({
@@ -24,11 +26,11 @@ const main = async () => {
     username: "dawae",
     password: "dawae",
     logging: true,
-    migrations:[path.join(__dirname, './migrations/*')],
+    migrations: [path.join(__dirname, "./migrations/*")],
     synchronize: true,
     entities: [Post, User, Updoot],
   });
-  await conn.runMigrations()
+  await conn.runMigrations();
   // await Post.delete({})
   const app = express();
 
@@ -66,7 +68,13 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }) => ({ req, res, redis }),
+    context: ({ req, res }) => ({
+      req,
+      res,
+      redis,
+      userLoader: createUserLoader(),
+      updootLoader: createUpdootLoader(),
+    }),
   });
   await server.start();
   server.applyMiddleware({ app, cors: false });

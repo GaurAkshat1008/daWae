@@ -21,6 +21,8 @@ const Post_1 = require("./entities/Post");
 const User_1 = require("./entities/User");
 const path_1 = __importDefault(require("path"));
 const Updoot_1 = require("./entities/Updoot");
+const createUserLoader_1 = require("./utils/createUserLoader");
+const createUpdootLoader_1 = require("./utils/createUpdootLoader");
 const main = async () => {
     const conn = await (0, typeorm_1.createConnection)({
         type: "postgres",
@@ -28,7 +30,7 @@ const main = async () => {
         username: "dawae",
         password: "dawae",
         logging: true,
-        migrations: [path_1.default.join(__dirname, './migrations/*')],
+        migrations: [path_1.default.join(__dirname, "./migrations/*")],
         synchronize: true,
         entities: [Post_1.Post, User_1.User, Updoot_1.Updoot],
     });
@@ -62,7 +64,13 @@ const main = async () => {
             resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver],
             validate: false,
         }),
-        context: ({ req, res }) => ({ req, res, redis }),
+        context: ({ req, res }) => ({
+            req,
+            res,
+            redis,
+            userLoader: (0, createUserLoader_1.createUserLoader)(),
+            updootLoader: (0, createUpdootLoader_1.createUpdootLoader)(),
+        }),
     });
     await server.start();
     server.applyMiddleware({ app, cors: false });
